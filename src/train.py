@@ -34,7 +34,15 @@ sequence_len = args.sequence_length
 aug_type = args.augment_type
 
 # Datasets
-if args.language == 'english':
+if args.language == 'spanish':
+    train_set = Dataset(os.path.join(args.data_path, 'es/data.train.txt'), tokenizer=tokenizer, sequence_len=sequence_len,
+                        token_style=token_style, is_train=True, augment_rate=ar, augment_type=aug_type)
+    val_set = Dataset(os.path.join(args.data_path, 'es/data.val.txt'), tokenizer=tokenizer, sequence_len=sequence_len,
+                      token_style=token_style, is_train=False)
+    test_set_ref = Dataset(os.path.join(args.data_path, 'es/data.test.txt'), tokenizer=tokenizer, sequence_len=sequence_len,
+                           token_style=token_style, is_train=False)
+    test_set = [val_set, test_set_ref]
+elif args.language == 'english':
     train_set = Dataset(os.path.join(args.data_path, 'en/train2012'), tokenizer=tokenizer, sequence_len=sequence_len,
                         token_style=token_style, is_train=True, augment_rate=ar, augment_type=aug_type)
     val_set = Dataset(os.path.join(args.data_path, 'en/dev2012'), tokenizer=tokenizer, sequence_len=sequence_len,

@@ -2,7 +2,14 @@ import torch
 from config import *
 from augmentation import *
 import numpy as np
-
+import sys
+ 
+def progress(current, total):
+  sys.stdout.write('\r')
+  # the exact output you're looking for:
+  percent = (current / total) * 100
+  sys.stdout.write(str(current) + "/" + str(total) + "- %.2f%%" % (percent))
+  sys.stdout.flush()
 
 def parse_data(file_path, tokenizer, sequence_len, token_style):
     """
@@ -19,7 +26,10 @@ def parse_data(file_path, tokenizer, sequence_len, token_style):
         lines = [line for line in f.read().split('\n') if line.strip()]
         idx = 0
         # loop until end of the entire text
-        while idx < len(lines):
+        lineCount = len(lines)
+        print("Reading "+file_path)        
+        while idx < lineCount:
+            progress(idx, lineCount)
             x = [TOKEN_IDX[token_style]['START_SEQ']]
             y = [0]
             y_mask = [1]  # which positions we need to consider while evaluating i.e., ignore pad or sub tokens
